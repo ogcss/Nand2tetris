@@ -1,0 +1,22 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/05/Memory.hdl
+
+CHIP JumpCheck {
+    IN AorC, jump[3], ng, zr;
+    OUT load, inc;
+
+    PARTS:
+    And(a=jump[2], b=ng, out=o1);
+    And(a=jump[1], b=zr, out=o2);
+    
+    Not(in=zr, out=nzr);
+    Not(in=ng, out=nng);
+    And(a=nzr, b=nng, out=o31);
+    And(a=jump[0], b=o31, out=o3);
+    
+    Or8Way(in[0]=o1, in[1]=o2, in[2]=o3, in[3..7]=false, out=outOR);
+    And(a=AorC, b=outOR, out=load, out=outAnd);
+    Not(in=outAnd, out=inc);
+}
